@@ -7,15 +7,41 @@ function App() {
   const [map, setMap] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  const placeMarker = useCallback((location) => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    window.initMap = () => {
+      const mapInstance = new window.google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      });
+
+      mapInstance.addListener('click', (e) => {
+        placeMarker(e.latLng);
+      });
+
+      setMap(mapInstance);
+      loadEntries();
+    };
+
+    return () => {
+      delete window.initMap;
+    };
+  }, []);
+
+  const placeMarker = (location) => {
     new window.google.maps.Marker({
       position: location,
       map: map,
     });
     setSelectedLocation(location);
-  }, [map]);
+  };
 
-  const displayEntriesOnMap = useCallback((entries) => {
+  const displayEntriesOnMap = (entries) => {
     entries.forEach(entry => {
       new window.google.maps.Marker({
         position: entry.location,
@@ -23,9 +49,9 @@ function App() {
         title: entry.description
       });
     });
-  }, [map]);
+  };
 
-  const loadEntries = useCallback(() => {
+  const loadEntries = () => {
     const entriesCollection = collection(db, 'entries');
     const entriesQuery = query(entriesCollection, orderBy('timestamp', 'desc'));
     onSnapshot(entriesQuery, (snapshot) => {
@@ -35,34 +61,7 @@ function App() {
       }));
       displayEntriesOnMap(entryList);
     });
-  }, [displayEntriesOnMap]);
-
-  const initMap = useCallback(() => {
-    const mapInstance = new window.google.maps.Map(document.getElementById('map'), {
-      center: { lat: -34.397, lng: 150.644 },
-      zoom: 8
-    });
-
-    mapInstance.addListener('click', (e) => {
-      placeMarker(e.latLng);
-    });
-
-    setMap(mapInstance);
-    loadEntries();
-  }, [loadEntries, placeMarker]);
-
-  const loadMap = useCallback(() => {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    window.initMap = initMap;
-    document.body.appendChild(script);
-  }, [initMap]);
-
-  useEffect(() => {
-    loadMap();
-  }, [loadMap]);
+  };
 
   const addTravelEntry = async () => {
     const fileInput = document.getElementById('imageUpload');
