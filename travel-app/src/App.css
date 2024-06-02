@@ -2,7 +2,6 @@
   height: 40px;
   position: relative;
   padding: 20px;
-  background-color: lightblue;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,6 +23,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 .entry img {
@@ -36,21 +36,23 @@
 }
 
 h2 {
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 p {
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom:5px;
 }
 
-.input-container {
+.input-container-content {
   margin-bottom: 20px;
   margin: 10px;
   text-align: center;
 }
 
-.input-container input,
-.input-container textarea {
+.input-container-content input,
+.input-container-content textarea {
   width: 50%;
   padding: 10px;
   margin-bottom: 10px;
@@ -58,7 +60,7 @@ p {
   border-radius: 5px;
 }
 
-.input-container button {
+.input-container-content button {
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -67,11 +69,88 @@ p {
   cursor: pointer;
 }
 
-.input-container button:hover {
+.input-container-content button:hover {
   background-color: #0056b3;
 }
 
 .library-title {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.entry-buttons {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
   align-items: center;
+  border-color: rgb(214, 214, 214);
+  border-width: 0.75px;
+  margin-bottom: 3px;
+}
+
+.entry-buttons:hover {
+  background-color: rgb(223, 223, 223);
+}
+
+.user-entry {
+  text-align: center;
   margin-top: 20px;
+}
+
+.LoginSignup {
+  width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-fields {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit {
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: rgb(235, 235, 235);
+  color: black;
+  border-width: 0.75px;
+  border-color: rgb(214, 214, 214);
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.submit:hover {
+  background-color: rgb(226, 226, 226);
+}
+
+.login-error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.signup:onclick {
+  color: red;
+}
+
+body, h1, h2, h3 { 
+  font-family: 'Roboto', sans-serif; 
+}
+
+#description, #title, #entryDate, #imageUpload {
+  font-size: 14px; /* Adjust the font size as needed */
+  font-family: Roboto, sans-serif; /* Specify the desired font family */
+}
+
+#title {
+  font-weight: bold;
 }

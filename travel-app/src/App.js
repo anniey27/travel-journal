@@ -123,6 +123,7 @@ function Home() {
   const [user, setUser] = useState(null);
   const [map, setMap] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showEntryForm, setShowEntryForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -216,6 +217,10 @@ function Home() {
     });
   };
 
+  const toggleEntryForm = () => {
+    setShowEntryForm(!showEntryForm);
+  };
+
   const addTravelEntry = async () => {
     const fileInput = document.getElementById('imageUpload');
     const title = document.getElementById('title').value;
@@ -255,6 +260,10 @@ function Home() {
         setEntries((prevEntries) => [...prevEntries, newEntry]);
         loadEntries();
         console.log('Entry added');
+
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('entryDate').value = '';
       } catch (error) {
         console.error('Error adding entry:', error);
       }
@@ -292,20 +301,27 @@ function Home() {
     <div>
       <header className="App-header">
         <h1>Travel Journal</h1>
-        <button className="header-button" onClick={signOutUser}>
-          Sign out
-        </button>
+          <button className="entry-buttons" onClick={signOutUser}>Log out</button>
       </header>
       <div id="map" style={{ height: '80vh', width: '100vw' }}></div>
-      <div className="library-title"><h2>Add a Journal Entry</h2></div>
-      <div className="input-container">
-        <div><input type="date" id="entryDate" /></div>
-        <div><input type="file" id="imageUpload" /></div>
-        <div><input type="text" id="title" placeholder="Enter title of entry" /></div>
-        <div><textarea id="description" placeholder="Describe your trip!"></textarea></div>
-        <div><button onClick={addTravelEntry}>Add Entry</button></div>
+      <div className="user-entry">
+      <button onClick={toggleEntryForm} className="entry-buttons">Add Journal Entry</button> 
+      {showEntryForm && (
+        <div className="input-container">
+          <div className="input-container-content">
+            <div><input type="date" id="entryDate" /></div>
+            <div><input type="file" id="imageUpload" /></div>
+            <div><input type="text" id="title" placeholder="Enter title of entry" /></div>
+            <div><textarea id="description" placeholder="Describe your trip!"></textarea></div>
+            <div><button onClick={addTravelEntry}>Add Entry</button></div>
+          </div>
+          <button onClick={toggleEntryForm} className="entry-buttons">Close</button>
+        </div>
+      )}
       </div>
-      <div className="library-title"><h2>My Travel Library</h2></div>
+      <div className="library-title">
+        <div><h2>My Journal</h2></div>
+      </div>
       <div className="entries-container">
         {entries.map((entry) => (
           <div key={entry.id} className="entry" onDoubleClick={() => handleEntryDoubleClick(entry)}>
